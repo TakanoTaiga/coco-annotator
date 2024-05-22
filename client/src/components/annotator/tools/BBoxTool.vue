@@ -1,7 +1,6 @@
 <script>
 import paper from "paper";
 import tool from "@/mixins/toolBar/tool";
-import UndoAction from "@/undo";
 
 import { invertColor } from "@/libs/colors";
 import { BBox } from "@/libs/bbox";
@@ -13,12 +12,12 @@ export default {
   props: {
     scale: {
       type: Number,
-      default: 1
+      default: 1,
     },
     settings: {
       type: [Object, null],
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
@@ -32,21 +31,21 @@ export default {
         guidance: true,
         pathOptions: {
           strokeColor: "black",
-          strokeWidth: 1
-        }
+          strokeWidth: 1,
+        },
       },
       color: {
         blackOrWhite: true,
         auto: true,
         radius: 10,
-        circle: null
+        circle: null,
       },
       actionTypes: Object.freeze({
         ADD_POINTS: "Added Points",
         CLOSED_POLYGON: "Closed Polygon",
-        DELETE_POLYGON: "Delete Polygon"
+        DELETE_POLYGON: "Delete Polygon",
       }),
-      actionPoints: 0
+      actionPoints: 0,
     };
   },
   methods: {
@@ -57,7 +56,7 @@ export default {
         minDistance: this.polygon.minDistance,
         blackOrWhite: this.color.blackOrWhite,
         auto: this.color.auto,
-        radius: this.color.radius
+        radius: this.color.radius,
       };
     },
     setPreferences(pref) {
@@ -68,13 +67,13 @@ export default {
     createBBox(event) {
       this.polygon.path = new paper.Path(this.polygon.pathOptions);
       this.bbox = new BBox(event.point);
-      this.bbox.getPoints().forEach(point => this.polygon.path.add(point));
+      this.bbox.getPoints().forEach((point) => this.polygon.path.add(point));
     },
 
     modifyBBox(event) {
       this.polygon.path = new paper.Path(this.polygon.pathOptions);
       this.bbox.modifyPoint(event.point);
-      this.bbox.getPoints().forEach(point => this.polygon.path.add(point));
+      this.bbox.getPoints().forEach((point) => this.polygon.path.add(point));
     },
     /**
      * Frees current bbox
@@ -167,12 +166,12 @@ export default {
     },
     removeLastBBox() {
       this.polygon.path.removeSegments();
-    }
+    },
   },
   computed: {
     isDisabled() {
       return this.$parent.current.annotation === -1;
-    }
+    },
   },
   watch: {
     isActive(active) {
@@ -205,9 +204,9 @@ export default {
         this.color.circle.remove();
         this.color.circle = null;
       }
-    }
+    },
   },
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>

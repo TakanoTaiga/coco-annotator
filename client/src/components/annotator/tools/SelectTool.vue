@@ -8,8 +8,8 @@ export default {
   props: {
     scale: {
       type: Number,
-      default: 1
-    }
+      default: 1,
+    },
   },
   data() {
     return {
@@ -24,7 +24,7 @@ export default {
         indicatorWidth: 0,
         indicatorSize: 0,
         center: null,
-        canMove: false
+        canMove: false,
       },
       hover: {
         showText: true,
@@ -38,7 +38,7 @@ export default {
         rounded: 0,
         category: null,
         annotation: null,
-        annotationText: null
+        annotationText: null,
       },
       keypoint: null,
       hitOptions: {
@@ -46,16 +46,16 @@ export default {
         stroke: true,
         fill: false,
         tolerance: 10,
-        match: hit => {
+        match: (hit) => {
           return !hit.item.hasOwnProperty("indicator");
-        }
-      }
+        },
+      },
     };
   },
   methods: {
     export() {
       return {
-        showText: this.hover.showText
+        showText: this.hover.showText,
       };
     },
     setPreferences(pref) {
@@ -106,7 +106,7 @@ export default {
         string += "No Metadata \n";
       } else {
         string += "Metadata \n";
-        metadata.forEach(element => {
+        metadata.forEach((element) => {
           if (element.key.length !== 0) {
             string += " " + element.key + " = " + element.value + " \n";
           }
@@ -238,7 +238,7 @@ export default {
         let delta_x = this.initPoint.x - event.point.x;
         let delta_y = this.initPoint.y - event.point.y;
         let segments = this.moveObject.children[0].segments;
-        segments.forEach(segment => {
+        segments.forEach((segment) => {
           let p = segment.point;
           segment.point = new paper.Point(p.x - delta_x, p.y - delta_y);
         });
@@ -259,9 +259,8 @@ export default {
           next.point = new paper.Point(next.point.x, event.point.y);
         } //getbbox here somehow
         this.segment.point = event.point;
-      }
-      else if (!this.keypoint) {
-        // the event point exists on a relative coordinate system (dependent on screen dimensions) 
+      } else if (!this.keypoint) {
+        // the event point exists on a relative coordinate system (dependent on screen dimensions)
         // however, the image on the canvas paper exists on an absolute coordinate system
         // thus, tracking mouse deltas from the previous point is necessary
         let delta_x = this.initPoint.x - event.point.x;
@@ -270,17 +269,16 @@ export default {
         let new_center = this.$parent.paper.view.center.add(center_delta);
         this.$parent.paper.view.setCenter(new_center);
       }
-      
     },
 
-    onMouseUp(event) {
+    onMouseUp() {
       this.clear();
     },
 
     onMouseMove(event) {
-      // ensures that the initPoint is always tracked. 
+      // ensures that the initPoint is always tracked.
       // Necessary for the introduced pan functionality and fixes a bug with selecting and dragging bboxes, since initPoint is initially undefined
-      this.initPoint = event.point;  
+      this.initPoint = event.point;
 
       let hitResult = this.$parent.paper.project.hitTest(
         event.point,
@@ -329,9 +327,8 @@ export default {
 
         this.hover.category = this.$parent.getCategory(categoryId);
         if (this.hover.category != null) {
-          this.hover.annotation = this.hover.category.getAnnotation(
-            annotationId
-          );
+          this.hover.annotation =
+            this.hover.category.getAnnotation(annotationId);
           event.item.selected = true;
           this.hoverText();
         }
@@ -356,7 +353,7 @@ export default {
       } else {
         this.clear();
       }
-    }
+    },
   },
   watch: {
     keypoint(keypoint) {
@@ -388,7 +385,7 @@ export default {
           this.hover.box.bounds = this.hover.text.bounds;
         }
       },
-      immediate: true
+      immediate: true,
     },
     isActive(active) {
       if (active) {
@@ -410,7 +407,7 @@ export default {
           this.hover.annotation.compoundPath.selected = false;
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

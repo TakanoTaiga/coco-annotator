@@ -7,13 +7,13 @@ export default {
   data() {
     return {
       name: "Save",
-      icon: "fa-save"
+      icon: "fa-save",
     };
   },
   methods: {
     execute() {
       this.$parent.save();
-    }
-  }
+    },
+  },
 };
 </script>

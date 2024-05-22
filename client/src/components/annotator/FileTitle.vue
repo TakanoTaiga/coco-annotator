@@ -3,18 +3,18 @@
     <i
       v-show="previousimage != null"
       class="fa fa-arrow-left image-arrows"
-      style="float:left"
-      @click="route(previousimage)"
+      style="float: left"
+      @click="route(previousimage, labelmode)"
     />
     <i
       v-show="nextimage != null"
       class="fa fa-arrow-right image-arrows"
-      style="float:right"
-      @click="route(nextimage)"
+      style="float: right"
+      @click="route(nextimage, labelmode)"
     />
 
-    <h6 class="text-center" style="color: white;">
-      <span class="d-inline-block text-truncate" style="max-width: 73%;">{{
+    <h6 class="text-center" style="color: white">
+      <span class="d-inline-block text-truncate" style="max-width: 73%">{{
         filename
       }}</span>
     </h6>
@@ -27,16 +27,21 @@ export default {
   props: {
     filename: {
       type: String,
-      required: true
+      required: true,
     },
     previousimage: {
       type: Number,
-      default: null
+      default: null,
     },
     nextimage: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
+    labelmode: {
+      type: String,
+      default: null,
+      required: false,
+    },
   },
   methods: {
     /**
@@ -44,17 +49,20 @@ export default {
      *
      * @param {Number} identifer id of a file
      */
-    route(identifier) {
+    route(identifier, labelmode) {
       // Make sure we pop the latest session before annotations
       this.$parent.current.annotation = -1;
 
       this.$nextTick(() => {
         this.$parent.save(() => {
-          this.$router.push({ name: "annotate", params: { identifier } });
+          this.$router.push({
+            name: "annotate",
+            params: { identifier, labelmode },
+          });
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

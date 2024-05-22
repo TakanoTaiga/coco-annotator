@@ -1,6 +1,5 @@
 <template>
-  <div style="display: block; height: inherit;">
-    
+  <div style="display: block; height: inherit">
     <aside v-show="panels.show.left" class="left-panel shadow-lg">
       <div v-show="mode == 'segment'">
         <hr />
@@ -75,7 +74,7 @@
         <ShowAllButton />
         <HideAllButton />
       </div>
-      <hr>
+      <hr />
       <CenterButton />
       <UndoButton />
 
@@ -99,6 +98,7 @@
       <FileTitle
         :previousimage="image.previous"
         :nextimage="image.next"
+        :labelmode="this.mode"
         :filename="image.filename"
         ref="filetitle"
       />
@@ -193,28 +193,35 @@
             />
           </div>
           <div v-if="$refs.dextr != null">
-            <DEXTRPanel
-              :dextr="$refs.dextr"
-            />
+            <DEXTRPanel :dextr="$refs.dextr" />
           </div>
         </div>
       </div>
     </aside>
 
     <div class="middle-panel" :style="{ cursor: cursor }">
-    <v-touch @pinch="onpinch" @pinchstart="onpinchstart">
-      <div id="frame" class="frame" @wheel="onwheel">
-        <canvas class="canvas" id="editor" ref="image" resize />
-      </div>
-    </v-touch>   
+      <v-touch @pinch="onpinch" @pinchstart="onpinchstart">
+        <div id="frame" class="frame" @wheel="onwheel">
+          <canvas class="canvas" id="editor" ref="image" resize />
+        </div>
+      </v-touch>
     </div>
 
-    <div v-show="annotating.length > 0" class="fixed-bottom alert alert-warning alert-dismissible fade show">
+    <div
+      v-show="annotating.length > 0"
+      class="fixed-bottom alert alert-warning alert-dismissible fade show"
+    >
       <span>
-      This image is being annotated by <b>{{ annotating.join(', ') }}</b>.
+        This image is being annotated by <b>{{ annotating.join(", ") }}</b
+        >.
       </span>
-      
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -303,8 +310,11 @@ export default {
   props: {
     identifier: {
       type: [Number, String],
-      required: true
-    }
+      required: true,
+    },
+    labelmode: {
+      type: [String],
+      required: false
   },
   data() {
     return {
@@ -313,7 +323,7 @@ export default {
       shapeOpacity: 0.6,
       zoom: 0.2,
       cursor: "move",
-      mode: "segment",
+      mode: this.labelmode || "segment",
       simplify: 1,
       panels: {
         show: {
@@ -429,7 +439,6 @@ export default {
     onpinchstart(e) {
       e.preventDefault();
       if (!this.doneLoading) return;
-      let view = this.paper.view;
       this.pinching.old_zoom = this.paper.view.zoom;
       return false;
     },
@@ -628,7 +637,6 @@ export default {
       }
       if (indices.keypoint !== -1) {
         this.current.keypoint = indices.keypoint;
-        let ann = this.currentCategory.category.annotations[this.current.annotation];
         let kpTool = this.$refs.keypoint;
         let selectTool = this.$refs.select;
         let category = this.$refs.category[this.current.category];
@@ -919,11 +927,11 @@ export default {
     },
     nextImage() {
       if(this.image.next != null)
-        this.$refs.filetitle.route(this.image.next);
+      this.$refs.filetitle.route(this.image.next, this.mode);
     },
     previousImage() {
       if(this.image.previous != null)
-        this.$refs.filetitle.route(this.image.previous);
+      this.$refs.filetitle.route(this.image.previous, this.mode);
     }
   },
   watch: {

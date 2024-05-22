@@ -10,7 +10,7 @@ services:
     container_name: annotator_webclient
     restart: "no"
     ports:
-      - "5000:5000"
+      - "6400:6400"
     environment:
       - SECRET_KEY=RandomSecretKeyHere
       - FILE_WATCHER=true

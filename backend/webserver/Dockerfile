@@ -10,7 +10,7 @@ RUN python set_path.py
 ENV FLASK_ENV=development
 ENV DEBUG=true
 
-EXPOSE 5000
+EXPOSE 6400
 CMD gunicorn -c webserver/gunicorn_config.py webserver:app --no-sendfile
 
 

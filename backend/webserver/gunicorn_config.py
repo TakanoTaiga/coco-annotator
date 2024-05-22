@@ -2,7 +2,7 @@
 from config import Config
 
 
-bind = '0.0.0.0:5000'
+bind = '0.0.0.0:6400'
 backlog = 2048
 
 workers = 1
